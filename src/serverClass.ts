@@ -4,6 +4,10 @@ import * as net from 'net';
 
 export class ServerEE extends EventEmitter{
     public server: any;
+
+    /**
+     * Constructor de la clase. Crea un objeto server y define qué código ejecutar ante posibles eventos.
+     */
     constructor(){
         super();
 
@@ -102,25 +106,13 @@ export class ServerEE extends EventEmitter{
             });
         });
     }
-
+    /**
+     * Pone en escucha el servidor en un puerto indicado por el usuario
+     * @param port Número del puerto
+     */
     listen(port: number){
         this.server.listen(port, () => {
             console.log("Server a la escucha...");
         });
     }
 }
-
-/*
-server.listen(60300, () => {
-    console.log("Server a la escucha...");
-});
-*/
-/*
-const myServ = new ServerEE();
-myServ.listen(60300);
-myServ.on("fullmess", (objJSON) => {
-    console.log("HE PILLAO EL EVENTO");
-});
-myServ.on("addEvent", (objJSON) => {
-    console.log("EVENTO ADD");
-});*/

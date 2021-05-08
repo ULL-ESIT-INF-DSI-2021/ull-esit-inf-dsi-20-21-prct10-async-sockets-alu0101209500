@@ -3,7 +3,9 @@ import * as yargs from 'yargs';
 import {connect} from 'net';
 import * as chalk from 'chalk';
 
-
+/**
+ * Define el formato de una petición al servidor
+ */
 export type RequestType = {
     type: 'add' | 'rm' | 'ls' | 'read' | 'mod';
     user: string;
@@ -13,8 +15,15 @@ export type RequestType = {
     color?: string;
 }
 
+/**
+ * Clase Cliente - Permite crear objetos cliente que hagan peticiones a un servidor y procesen las respuestas.
+ */
 export class ClientEE extends EventEmitter{
     public client: any;
+    /**
+     * Constructor de la clase. Establece la conexión con el servidor y define qué código ejecutar ante posibles eventos.
+     * @param pt Puerto de conexión
+     */
     constructor(pt: number){
         super();
         let wholeData = '';
@@ -74,29 +83,13 @@ export class ClientEE extends EventEmitter{
         });
     }
 
+    /**
+     * Envía una petición al servidor.
+     * @param objJSON Objeto con la información de la petición
+     */
     sendtoserv(objJSON: RequestType){
         console.log('Se está enviando:');
         console.log(objJSON);
         this.client.write(JSON.stringify(objJSON) + '\n');
     }
 }
-
-/*
-let client = connect({port: 60300});
-let client2 = connect({port: 60300});
-
-
-client.write("{\"type\": \"add\", \"color\":");
-
-const timer = setTimeout(() => {
-    client2.write("{\"type\":\"rm\"}\n");
-    client.write("\"blue\"}\n");
-    client2.on('data', (data) => {
-        console.log("Por aquí llegó");
-    });
-}, 4000);
-
-client.on('data', (data) => {
-    console.log("Ha llegao");
-});
-*/
