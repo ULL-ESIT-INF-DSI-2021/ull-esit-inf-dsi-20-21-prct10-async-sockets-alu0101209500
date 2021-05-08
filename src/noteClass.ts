@@ -31,11 +31,9 @@ export class NoteClass {
             filesys.mkdirSync(`./files/${this.user}`);
         }
         if (filesys.existsSync(`./files/${this.user}/${title}.json`)){
-            console.log(chalk.red("The note already exists!"));
             return("The note already exists!");
         } else {
             filesys.writeFileSync(`./files/${this.user}/${title}.json`, this.getJSON(title, body, color));
-            console.log(chalk.green("Succesfully created!"));
             return("Succesfully created!");
         }
     }
@@ -48,7 +46,6 @@ export class NoteClass {
             filesys.rmSync(`./files/${this.user}/${title}.json`);
             return "Note removed";
         } else {
-            console.log(chalk.red("That note does not exist."));
             return "That note does not exist.";
         }
     }
@@ -58,12 +55,10 @@ export class NoteClass {
     lsNote(){
         let result: [string, string][] = [];
         if(!filesys.existsSync(`./files/${this.user}`)){
-            console.log(chalk.red(`User ${this.user} has no notes`));
             result.push([`User ${this.user} has no notes`, "red"]);
             return result;
         } else {
             if(filesys.readdirSync(`./files/${this.user}`).length == 0){
-                console.log(chalk.red(`User ${this.user} has no notes`));
                 result.push([`User ${this.user} has no notes`, "red"]);
                 return result;
             } else {
@@ -72,23 +67,19 @@ export class NoteClass {
                     let jsonobj = JSON.parse(String(filesys.readFileSync(`./files/${this.user}/${elem}`)));
                     switch (jsonobj.color) {
                         case "red":
-                            console.log(chalk.red(jsonobj.title));
                             result.push([jsonobj.title, "red"]);
                             break;
                         case "blue":
-                            console.log(chalk.blue(jsonobj.title));
                             result.push([jsonobj.title, "blue"]);
                             break;
                         case "green":
-                            console.log(chalk.green(jsonobj.title));
                             result.push([jsonobj.title, "green"]);
                             break;
                         case "yellow":
-                            console.log(chalk.yellow(jsonobj.title));
                             result.push([jsonobj.title, "yellow"]);
                             break;
                         default:
-                            console.log(chalk.red("The color of this note is not valid"));
+                            result.push(["The color of this note is not valid: " + jsonobj.title, "red"]);
                             break;
                     }
                 });
@@ -104,23 +95,6 @@ export class NoteClass {
         if (filesys.existsSync(`./files/${this.user}/${title}.json`)){
             let jsonobj = JSON.parse(String(filesys.readFileSync(`./files/${this.user}/${title}.json`)));
             return [jsonobj.title + "\n" + jsonobj.body, jsonobj.color];
-            switch (jsonobj.color) {
-                case "red":
-                    console.log(chalk.red(jsonobj.title + "\n" + jsonobj.body));
-                    break;
-                case "blue":
-                    console.log(chalk.blue(jsonobj.title + "\n" + jsonobj.body));
-                    break;
-                case "green":
-                    console.log(chalk.green(jsonobj.title + "\n" + jsonobj.body));
-                    break;
-                case "yellow":
-                    console.log(chalk.yellow(jsonobj.title + "\n" + jsonobj.body));
-                    break;
-                default:
-                    console.log(chalk.red("The color of this note is not valid"));
-                    break;
-            }
         } else {
             console.log(chalk.red("That note does not exist."));
             return ["That note does not exist", "red"];
@@ -147,10 +121,8 @@ export class NoteClass {
             }
             filesys.rmSync(`./files/${this.user}/${title}.json`);
             filesys.writeFileSync(`./files/${this.user}/${jsonobj.title}.json`, this.getJSON(jsonobj.title, jsonobj.body, jsonobj.color));
-            console.log(chalk.green("Succesfully modified!"));
             return "Succesfully modified!";
         } else {
-            console.log(chalk.red("That note does not exist."));
             return "That note does not exist.";
         }
     }

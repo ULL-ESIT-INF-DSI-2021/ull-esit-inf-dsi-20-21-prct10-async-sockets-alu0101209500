@@ -22,7 +22,6 @@ export class ServerEE extends EventEmitter{
             });
 
             connection.on('fullmess', (objJSON) => {
-                console.log(objJSON.type);
                 switch (objJSON.type) {
                     case "add":
                         connection.emit('addEvent', objJSON);
@@ -55,66 +54,57 @@ export class ServerEE extends EventEmitter{
                 let nota = new NoteClass(objJSON.user);
                 let result = "";
                 result = nota.addNote(String(objJSON.title), String(objJSON.body), String(objJSON.color));
-                console.log("Ha entrado en add:");
-                console.log(objJSON);
+                console.log("Petición add");
                 connection.write(JSON.stringify({type: "stateResponse", state: result}));
                 connection.end();
-                console.log("Conexión finalizada");
             });
             connection.on('rmEvent', (objJSON) => {
                 let nota = new NoteClass(objJSON.user);
                 let result = "";
                 result = nota.rmNote(String(objJSON.title));
-                console.log("Ha entrado en rm");
-                console.log(objJSON);
+                console.log("Petición rm");
                 connection.write(JSON.stringify({type: "stateResponse", state: result}));
                 connection.end();
-                console.log("Conexión finalizada");
             });
             connection.on('lsEvent', (objJSON) => {
                 let nota = new NoteClass(objJSON.user);
                 let result = [];
                 result = nota.lsNote();
-                console.log("Ha entrado en ls");
-                console.log(objJSON);
+                console.log("Petición ls");
                 connection.write(JSON.stringify({type: "listResponse", state: result}));
                 connection.end();
-                console.log("Conexión finalizada");
             });
             connection.on('modEvent', (objJSON) => {
                 let nota = new NoteClass(objJSON.user);
                 let result = "";
 
                 result = nota.modifyNote(String(objJSON.title), String(objJSON.ntitle), String(objJSON.body), String(objJSON.color));
-                console.log("Ha entrado en mod");
-                console.log(objJSON);
+                console.log("Petición mod");
                 connection.write(JSON.stringify({type: "stateResponse", state: result}));
                 connection.end();
-                console.log("Conexión finalizada");
             });
             connection.on('readEvent', (objJSON) => {
                 let nota = new NoteClass(objJSON.user);
                 let result:any = {};
                 result = nota.readNote(String(objJSON.title));
-                console.log("Ha entrado en read");
-                console.log(objJSON);
+                console.log("Petición Read");
                 connection.write(JSON.stringify({type: "noteResponse", state: result}));
 
                 connection.end();
-                console.log("Conexión finalizada");
             });
             connection.on('errEvent', (objJSON) => {
-                console.log("Ha entrado en error");
-                console.log(objJSON);
+                console.log("Error en la petición");
                 connection.write(JSON.stringify({type: "stateResponse", state: "Error"}));
                 connection.end();
-                console.log("Conexión finalizada");
+            });
+            connection.on('close', () => {
+                console.log("A client has disconected");
             });
         });
     }
 
     listen(port: number){
-        this.server.listen(60300, () => {
+        this.server.listen(port, () => {
             console.log("Server a la escucha...");
         });
     }
@@ -125,7 +115,7 @@ server.listen(60300, () => {
     console.log("Server a la escucha...");
 });
 */
-
+/*
 const myServ = new ServerEE();
 myServ.listen(60300);
 myServ.on("fullmess", (objJSON) => {
@@ -133,4 +123,4 @@ myServ.on("fullmess", (objJSON) => {
 });
 myServ.on("addEvent", (objJSON) => {
     console.log("EVENTO ADD");
-});
+});*/
